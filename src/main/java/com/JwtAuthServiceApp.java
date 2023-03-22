@@ -16,7 +16,7 @@ import com.service.UserService;
 
 @SpringBootApplication
 @RequiredArgsConstructor
-public class JwtAuthServiceApp implements CommandLineRunner {
+public class JwtAuthServiceApp /*implements CommandLineRunner*/ {
 
   final UserService userService;
 
@@ -29,7 +29,7 @@ public class JwtAuthServiceApp implements CommandLineRunner {
     return new ModelMapper();
   }
 
-  @Override
+  /*@Override
   public void run(String... params) throws Exception {
     AppUser admin = new AppUser();
     admin.setUsername("admin");
@@ -46,6 +46,6 @@ public class JwtAuthServiceApp implements CommandLineRunner {
     client.setAppUserRoles(new ArrayList<AppUserRole>(Arrays.asList(AppUserRole.ROLE_CLIENT)));
 
     userService.signup(client);
-  }
+  }*/
 
 }
