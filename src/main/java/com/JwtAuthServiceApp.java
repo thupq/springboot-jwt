@@ -1,18 +1,12 @@
 package com;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import lombok.RequiredArgsConstructor;
-import com.model.AppUser;
-import com.model.AppUserRole;
 import org.modelmapper.ModelMapper;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import com.service.UserService;
+import com.service.impl.UserService;
 
 @SpringBootApplication
 @RequiredArgsConstructor

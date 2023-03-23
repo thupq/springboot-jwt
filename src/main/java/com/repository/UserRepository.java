@@ -5,14 +5,20 @@ import javax.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.model.AppUser;
+import org.springframework.data.jpa.repository.Query;
 
-public interface UserRepository extends JpaRepository<AppUser, Integer> {
+import java.util.List;
 
-  boolean existsByUsername(String username);
+public interface UserRepository extends JpaRepository<AppUser, Long> {
 
-  AppUser findByUsername(String username);
+    boolean existsByUsername(String username);
 
-  @Transactional
-  void deleteByUsername(String username);
+    AppUser findByUsername(String username);
+
+    @Transactional
+    void deleteByUsername(String username);
+
+    @Query("SELECT s FROM AppUser s WHERE s.username = :username AND s.status = :status")
+    List<AppUser> findByUsernameActive(String username, Long status);
 
 }

@@ -2,18 +2,13 @@ package com.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.model.response.ResponseResult;
+import com.model.response.UserResponse;
 import lombok.RequiredArgsConstructor;
 import com.model.AppUser;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,7 +18,7 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
 import com.dto.UserDataDTO;
 import com.dto.UserResponseDTO;
-import com.service.UserService;
+import com.service.impl.UserService;
 
 @RestController
 @RequestMapping("/users")
@@ -53,6 +48,17 @@ public class UserController {
       @ApiResponse(code = 422, message = "Username is already in use")})
   public String signup(@ApiParam("Signup User") @RequestBody UserDataDTO user) {
     return userService.signup(modelMapper.map(user, AppUser.class));
+  }
+
+  @PutMapping("/update")
+  @ApiOperation(value = "${UserController.signup}")
+  @ApiResponses(value = {//
+          @ApiResponse(code = 400, message = "Something went wrong"), //
+          @ApiResponse(code = 403, message = "Access denied"), //
+          @ApiResponse(code = 422, message = "Username is already in use")})
+  public ResponseResult<UserResponse> updateUser(@ApiParam("userId") @PathVariable("userId") Long userId, @ApiParam("Update User") @RequestBody UserDataDTO user) {
+//    return userService.signup(modelMapper.map(user, AppUser.class));
+    return ResponseResult.ofSuccess(userService.updateUser(userId, user));
   }
 
   @DeleteMapping(value = "/{username}")
