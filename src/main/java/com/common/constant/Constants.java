@@ -4,6 +4,8 @@ import org.apache.http.HttpHost;
 
 import java.util.List;
 
+import static java.util.List.*;
+
 public class Constants {
     public static final String SEPARATOR = ",";
     public static final String SEMI_COLON = ";";
@@ -405,14 +407,14 @@ public class Constants {
         public static final int TYPE_OR = 2;
 
         //Allowing formats for date type
-        public static final List<String> DATE_VALUE_TYPE_FORMAT = List.of("dd/MM/yyyy HH:mm:ss", "dd/MM/yyyy");
+       /* public static final List<String> DATE_VALUE_TYPE_FORMAT = List.of("dd/MM/yyyy HH:mm:ss", "dd/MM/yyyy");
         public static final String PROPERTY_FORMAT_DELIM = "||";
         public static final int ONE_REQUEST_MAX_FIELD_SIZE = 900;
         public static final List<Integer> TEXT_OPERATORS = List.of(OPERATOR.EQUAL, OPERATOR.CONTAIN, OPERATOR.NOT_EQUAL
                 , OPERATOR.IS_EMPTY, OPERATOR.IS_NOT_EMPTY);
 
         public static final List<Integer> DATE_LONG_OPERATORS = List.of(OPERATOR.EQUAL, OPERATOR.GT, OPERATOR.GTE, OPERATOR.LT, OPERATOR.LTE, OPERATOR.NOT_EQUAL
-                , OPERATOR.IS_NOT_EMPTY);
+                , OPERATOR.IS_NOT_EMPTY);*/
 
         public static final String DEFAULT_USER = "elastic";
         public static final String DEFAULT_PASS = "elastic";

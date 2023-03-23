@@ -7,6 +7,7 @@ import com.dto.UserDataDTO;
 import com.exception.validator.ValidateException;
 import com.model.response.UserResponse;
 import com.security.SecurityUtils;
+import com.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -64,13 +65,13 @@ public class UserService {
         if (Constants.STATUS.ACTIVE.equals(user.getStatus())) {
             throw new ValidateException("User không tồn tại hoặc đã bị xóa");
         }
-        AppUser response = modelMapper.map(appUser, AppUser.class);
-        response.setPassword(passwordEncoder.encode(appUser.getPassword()));
-        response.setLastUpdatedBy(SecurityUtils.getCurrentUser());
-        response.setLastUpdatedDate(LocalDateTime.now());
-        userRepository.save(response);
+//        AppUser response = modelMapper.map(appUser, AppUser.class);
+        user.setPassword(passwordEncoder.encode(appUser.getPassword()));
+        user.setLastUpdatedBy(SecurityUtils.getCurrentUser());
+        user.setLastUpdatedDate(LocalDateTime.now());
+        userRepository.save(user);
 
-        return modelMapper.map(response, UserResponse.class);
+        return modelMapper.map(user, UserResponse.class);
 
     }
 
@@ -92,6 +93,25 @@ public class UserService {
 
     public String refresh(String username) {
         return jwtTokenProvider.createToken(username, userRepository.findByUsername(username).getAppUserRoles());
+    }
+
+    @Override
+    public UserResponse createUser(UserDataDTO appUser) {
+        if (!userRepository.existsByUsername(appUser.getUsername())) {
+            AppUser au = modelMapper.map(appUser, AppUser.class);
+            au.setPassword(passwordEncoder.encode(appUser.getPassword()));
+            au.setStatus(Integer.valueOf(Constants.STATUS.ACTIVE));
+            au.setCreatedBy(SecurityUtils.getCurrentUser());
+            au.setCreatedDate(LocalDateTime.now());
+            au.setLastUpdatedBy(SecurityUtils.getCurrentUser());
+            au.setLastUpdatedDate(LocalDateTime.now());
+            userRepository.save(au);
+            return modelMapper.map(au, UserResponse.class);
+        } else {
+            throw new ValidateException("Username đã được sử dụng");
+//            throw new CustomException("Username is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
     }
 
 }

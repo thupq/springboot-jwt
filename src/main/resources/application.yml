@@ -3,7 +3,7 @@ spring:
 #    url: jdbc:h2:mem:test_db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     url: jdbc:mysql://localhost:3306/my_project
     username: root
-    password: 123456
+    password: Root@123
   tomcat:
     max-wait: 20000
     max-active: 50
@@ -27,7 +27,7 @@ security:
   jwt:
     token:
       secret-key: secret-key
-      expire-length: 300000 # 5 minutes duration by default: 5 minutes * 60 seconds * 1000 miliseconds
+      expire-length: 3600000 # 60 minutes duration by default: 60 minutes * 60 seconds * 1000 miliseconds
       
 UserController:
   signin: Authenticates user and returns its JWT token.
