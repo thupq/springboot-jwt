@@ -79,12 +79,13 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteByUsername(username);
     }
 
-    public AppUser search(String username) {
+    public UserResponse search(String username) {
         AppUser appUser = userRepository.findByUsername(username);
         if (appUser == null) {
-            throw new CustomException("The user doesn't exist", HttpStatus.NOT_FOUND);
+//            throw new CustomException("The user doesn't exist", HttpStatus.NOT_FOUND);
+            throw new ValidateException("User không tồn tại hoặc đã bị xóa");
         }
-        return appUser;
+        return modelMapper.map(appUser, UserResponse.class);
     }
 
     public AppUser whoami(HttpServletRequest req) {

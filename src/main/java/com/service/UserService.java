@@ -16,7 +16,7 @@ public interface UserService {
 
     void delete(String username);
 
-    AppUser search(String username);
+    UserResponse search(String username);
 
     AppUser whoami(HttpServletRequest req);
 

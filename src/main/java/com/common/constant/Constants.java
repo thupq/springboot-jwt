@@ -28,12 +28,29 @@ public class Constants {
     public static final String PDF_PROPERTY_CURRENT_VALUE = "THÔNG TIN HIỆN TẠI";
     public static final String PDF_PROPERTY_NEW_VALUE = "THÔNG TIN MỚI";
 
-    public static final String VOFFICE_DEPARTMENT = "VOFFICE_DEPARTMENT";
-    public static final class MODULE_DISPLAY_TYPE {
+    public static final String SEPARATOR_SPACE = ", ";
+    public static final String SHARP2 = "##";
+    public static final String UNDERLINED = "_";
+    public static final String ON = "1";
+    public static final String OFF = "0";
 
-        public static final String NORMAL = "1";
-        public static final String MESSAGE = "2";
-    };
+    public static final String FULL_DATETIME = "dd/MM/yyyy HH:mm:ss";
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
+    public static final String CALENDAR_FORMAT = "dd/MM/yyyy";
+    public static final String DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
+    public static final String ID_SEPARATE_COMMA = ",";
+    public static final String PATH_TEMPLATE = "classpath:template/";
+    public static final String REGEX_OPTION_SET_CODE = "[a-zA-Z0-9_]+";
+    public static final String REGEX_EMAIL = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,6}$";
+    public static final String REGEX_IDENTITY_NUMBER = "^[0-9]{9,20}$";
+    public static final String REGEX_PHONE_NUMBER = "^(03|05|07|08|09)[0-9]{8}+$";
+    public static final String ACTION_USER_INFO = "ACTION_USER_INFO";
+    public static final String ACTION_USER = "ACTION_USER";
+    public static final String USER_DEFAULT = "ADMIN";
+    public static final String PATH_MESSAGE = "i18n/messages";
+    public static final String PATH_ERROR = "i18n/errors";
+    public static final String UNKNOWN_IP = "unknown";
 
     public static final class PO_MAP_REQUEST_FILE_STATUS {
         public static final String FAIL = "0";

@@ -24,7 +24,7 @@ import com.dto.UserResponseDTO;
 @RequestMapping("/users")
 @Api(tags = "users")
 @RequiredArgsConstructor
-public class UserController {
+public class UserController extends BaseController {
 
     private final UserService userService;
     private final ModelMapper modelMapper;
@@ -40,7 +40,7 @@ public class UserController {
         return userService.signin(username, password);
     }
 
-    @PostMapping("/signup")
+    /*@PostMapping("/signup")
     @ApiOperation(value = "${UserController.signup}")
     @ApiResponses(value = {//
             @ApiResponse(code = 400, message = "Something went wrong"), //
@@ -48,7 +48,7 @@ public class UserController {
             @ApiResponse(code = 422, message = "Username is already in use")})
     public String signup(@ApiParam("Signup User") @RequestBody UserDataDTO user) {
         return userService.signup(modelMapper.map(user, AppUser.class));
-    }
+    }*/
 
     @PutMapping("/update/{userId}")
     @ApiOperation(value = "${UserController.update}")
@@ -57,7 +57,6 @@ public class UserController {
             @ApiResponse(code = 403, message = "Access denied"), //
             @ApiResponse(code = 422, message = "Username is already in use")})
     public ResponseResult<UserResponse> updateUser(@ApiParam("userId") @PathVariable("userId") Long userId, @ApiParam("Update User") @RequestBody UserDataDTO user) {
-//    return userService.signup(modelMapper.map(user, AppUser.class));
         return ResponseResult.ofSuccess(userService.updateUser(userId, user));
     }
 
@@ -68,7 +67,6 @@ public class UserController {
             @ApiResponse(code = 403, message = "Access denied"), //
             @ApiResponse(code = 422, message = "Username is already in use")})
     public ResponseResult<UserResponse> createUser(@ApiParam("Create User") @RequestBody UserDataDTO user) {
-//    return userService.signup(modelMapper.map(user, AppUser.class));
         return ResponseResult.ofSuccess(userService.createUser(user));
     }
 
@@ -93,8 +91,8 @@ public class UserController {
             @ApiResponse(code = 403, message = "Access denied"), //
             @ApiResponse(code = 404, message = "The user doesn't exist"), //
             @ApiResponse(code = 500, message = "Expired or invalid JWT token")})
-    public UserResponseDTO search(@ApiParam("Username") @PathVariable String username) {
-        return modelMapper.map(userService.search(username), UserResponseDTO.class);
+    public ResponseResult<UserResponse> search(@ApiParam("Username") @PathVariable String username) {
+        return ResponseResult.ofSuccess(userService.search(username));
     }
 
     @GetMapping(value = "/me")
