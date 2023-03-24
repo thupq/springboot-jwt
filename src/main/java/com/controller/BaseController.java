@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -141,16 +142,16 @@ public class BaseController implements ErrorController {
         return new ResponseEntity<>(
                 Error.builder()
                         .errorCode(HttpStatus.FORBIDDEN.value())
-                        .messages(List.of("Access is denied"))
+                        .messages(Arrays.asList("Access is denied"))
                         .build(),
                 HttpStatus.FORBIDDEN
         );
     }
 
-    @Override
+   /* @Override
     public String getErrorPath() {
         return null;
-    }
+    }*/
 
     @InitBinder
     public void initialBinderForTrimmingSpaces(WebDataBinder webDataBinder) {
@@ -166,7 +167,7 @@ public class BaseController implements ErrorController {
         return new ResponseEntity<>(
                 Error.builder()
                         .errorCode(HttpStatus.BAD_REQUEST.value())
-                        .messages(List.of("Token hết hạn"))
+                        .messages(Arrays.asList("Token hết hạn"))
                         .build(),
                 HttpStatus.BAD_REQUEST
         );
@@ -179,7 +180,7 @@ public class BaseController implements ErrorController {
         return new ResponseEntity<>(
                 Error.builder()
                         .errorCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                        .messages(List.of("Có lỗi xảy ra, vui lòng liên hệ quản trị hệ thống"))
+                        .messages(Arrays.asList("Có lỗi xảy ra, vui lòng liên hệ quản trị hệ thống"))
                         .build(),
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
@@ -192,7 +193,7 @@ public class BaseController implements ErrorController {
         return new ResponseEntity<>(
                 Error.builder()
                         .errorCode(HttpStatus.BAD_REQUEST.value())
-                        .messages(List.of("Token hết hạn hoặc không hợp lệ"))
+                        .messages(Arrays.asList("Token hết hạn hoặc không hợp lệ"))
                         .build(),
                 HttpStatus.BAD_REQUEST
         );

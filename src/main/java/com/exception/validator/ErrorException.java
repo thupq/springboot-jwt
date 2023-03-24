@@ -5,13 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-import java.util.List;
+import java.util.Arrays;
 
 @Getter
 @AllArgsConstructor
 public class ErrorException extends RuntimeException {
 
-    private java.lang.Error error;
+    private Error error;
     private HttpStatus status;
 
     public static ErrorException notFound(String codeMessage) {
@@ -19,7 +19,7 @@ public class ErrorException extends RuntimeException {
                 Error.builder()
                         //.code(Error.CodeEnum.NOT_FOUND)
                         .errorCode(HttpStatus.BAD_REQUEST.value())
-                        .messages(List.of(Translator.toMessage(codeMessage)))
+                        .messages(Arrays.asList(Translator.toMessage(codeMessage)))
                         .build(),
                 HttpStatus.NOT_FOUND
         );

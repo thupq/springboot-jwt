@@ -20,6 +20,8 @@ import io.swagger.annotations.Authorization;
 import com.dto.UserDataDTO;
 import com.dto.UserResponseDTO;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/users")
 @Api(tags = "users")
@@ -110,6 +112,16 @@ public class UserController extends BaseController {
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CLIENT')")
     public String refresh(HttpServletRequest req) {
         return userService.refresh(req.getRemoteUser());
+    }
+
+    @GetMapping("/getAll")
+    @ApiOperation(value = "${UserController.getAll}")
+    @ApiResponses(value = {//
+            @ApiResponse(code = 400, message = "Something went wrong"), //
+            @ApiResponse(code = 403, message = "Access denied"), //
+            @ApiResponse(code = 422, message = "Username is already in use")})
+    public ResponseResult<List<UserResponse>> getAll() {
+        return ResponseResult.ofSuccess(userService.getAll());
     }
 
 }

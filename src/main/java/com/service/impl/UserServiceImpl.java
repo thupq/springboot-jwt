@@ -24,6 +24,7 @@ import com.security.JwtTokenProvider;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -113,6 +114,15 @@ public class UserServiceImpl implements UserService {
 //            throw new CustomException("Username is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
+    }
+
+    @Override
+    public List<UserResponse> getAll() {
+        List<UserResponse> responseList = userRepository.findAll().stream()
+                .map(u -> {
+                    return modelMapper.map(u, UserResponse.class);
+                }).collect(Collectors.toList());
+        return null;
     }
 
 }
