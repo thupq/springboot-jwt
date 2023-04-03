@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
             return jwtTokenProvider.createToken(username, userRepository.findByUsername(username).getAppUserRoles());
         } catch (AuthenticationException e) {
-            throw new CustomException("Invalid username/password supplied", HttpStatus.UNPROCESSABLE_ENTITY);
+            throw new ValidateException("Invalid username/password supplied");
         }
     }
 
@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
             userRepository.save(appUser);
             return jwtTokenProvider.createToken(appUser.getUsername(), appUser.getAppUserRoles());
         } else {
-            throw new CustomException("Username is already in use", HttpStatus.UNPROCESSABLE_ENTITY);
+            throw new ValidateException("Username is already in use");
         }
     }
 

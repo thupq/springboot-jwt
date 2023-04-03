@@ -1,9 +1,9 @@
 spring:
   datasource:
 #    url: jdbc:h2:mem:test_db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    url: jdbc:mysql://localhost:3306/my_project
+    url: jdbc:mysql://mysql:3306/my_project
     username: root
-    password: 123456
+    password: Root@123
   tomcat:
     max-wait: 20000
     max-active: 50
@@ -14,21 +14,21 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-#        dialect: org.hibernate.dialect.H2Dialect
+        #        dialect: org.hibernate.dialect.H2Dialect
         dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
         id:
           new_generator_mappings: false
 
 server:
-   port: 8080 # This is the default port anyway, but you can change it here
+  port: 8080 # This is the default port anyway, but you can change it here
 
 security:
   jwt:
     token:
       secret-key: secret-key
       expire-length: 3600000 # 60 minutes duration by default: 60 minutes * 60 seconds * 1000 miliseconds
-      
+
 UserController:
   signin: Authenticates user and returns its JWT token.
   signup: Creates user and returns its JWT token

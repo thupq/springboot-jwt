@@ -42,7 +42,7 @@ public class UserController extends BaseController {
         return userService.signin(username, password);
     }
 
-    /*@PostMapping("/signup")
+    @PostMapping("/signup")
     @ApiOperation(value = "${UserController.signup}")
     @ApiResponses(value = {//
             @ApiResponse(code = 400, message = "Something went wrong"), //
@@ -50,7 +50,7 @@ public class UserController extends BaseController {
             @ApiResponse(code = 422, message = "Username is already in use")})
     public String signup(@ApiParam("Signup User") @RequestBody UserDataDTO user) {
         return userService.signup(modelMapper.map(user, AppUser.class));
-    }*/
+    }
 
     @PutMapping("/update/{userId}")
     @ApiOperation(value = "${UserController.update}")
