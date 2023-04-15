@@ -1,7 +1,7 @@
 package com.security;
 
 import lombok.RequiredArgsConstructor;
-import com.model.AppUser;
+import com.model.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,16 +17,16 @@ public class MyUserDetails implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    final AppUser appUser = userRepository.findByUsername(username);
+    final User user = userRepository.findByUsername(username);
 
-    if (appUser == null) {
+    if (user == null) {
       throw new UsernameNotFoundException("User '" + username + "' not found");
     }
 
     return org.springframework.security.core.userdetails.User//
         .withUsername(username)//
-        .password(appUser.getPassword())//
-        .authorities(appUser.getAppUserRoles())//
+        .password(user.getPassword())//
+        .authorities(user.getUserRoles())//
         .accountExpired(false)//
         .accountLocked(false)//
         .credentialsExpired(false)//

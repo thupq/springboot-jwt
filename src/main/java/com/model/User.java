@@ -17,12 +17,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.Size;
 
 @Entity
 @Data // Create getters and setters
 @NoArgsConstructor
-public class AppUser {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,7 +41,7 @@ public class AppUser {
     private Integer status;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    List<AppUserRole> appUserRoles;
+    List<UserRole> userRoles;
 
     @Column(name = "created_by")
     private String createdBy;

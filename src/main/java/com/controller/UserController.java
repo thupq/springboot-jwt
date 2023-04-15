@@ -6,7 +6,7 @@ import com.model.response.ResponseResult;
 import com.model.response.UserResponse;
 import com.service.UserService;
 import lombok.RequiredArgsConstructor;
-import com.model.AppUser;
+import com.model.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -48,8 +48,8 @@ public class UserController extends BaseController {
             @ApiResponse(code = 400, message = "Something went wrong"), //
             @ApiResponse(code = 403, message = "Access denied"), //
             @ApiResponse(code = 422, message = "Username is already in use")})
-    public String signup(@ApiParam("Signup User") @RequestBody UserDataDTO user) {
-        return userService.signup(modelMapper.map(user, AppUser.class));
+    public ResponseResult<UserResponse> signup(@ApiParam("Signup User") @RequestBody UserDataDTO user) {
+        return ResponseResult.ofSuccess(userService.signup(modelMapper.map(user, User.class)));
     }
 
     @PutMapping("/update/{userId}")

@@ -2,10 +2,9 @@ package com.dto;
 
 import java.util.List;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import com.model.AppUserRole;
+import com.model.UserRole;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
@@ -32,6 +31,6 @@ public class UserDataDTO {
     private String password;
 
     //  @ApiModelProperty(position = 3)
-    List<AppUserRole> appUserRoles;
+    List<UserRole> userRoles;
 
 }

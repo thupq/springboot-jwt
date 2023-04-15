@@ -8,17 +8,17 @@ import com.exception.validator.ValidateException;
 import com.model.response.UserResponse;
 import com.security.SecurityUtils;
 import com.service.UserService;
+import com.service.async.AcoountAsync;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.util.Strings;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.exception.CustomException;
-import com.model.AppUser;
+import com.model.User;
 import com.repository.UserRepository;
 import com.security.JwtTokenProvider;
 
@@ -35,25 +35,27 @@ public class UserServiceImpl implements UserService {
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManager authenticationManager;
     private final ModelMapper modelMapper;
+    private final AcoountAsync acoountAsync;
 
     public String signin(String username, String password) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-            return jwtTokenProvider.createToken(username, userRepository.findByUsername(username).getAppUserRoles());
+            return jwtTokenProvider.createToken(username, userRepository.findByUsername(username).getUserRoles());
         } catch (AuthenticationException e) {
             throw new ValidateException("Invalid username/password supplied");
         }
     }
 
-    public String signup(AppUser appUser) {
-        if (!userRepository.existsByUsername(appUser.getUsername())) {
-            appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
-            appUser.setCreatedBy(SecurityUtils.getCurrentUser());
-            appUser.setCreatedDate(LocalDateTime.now());
-            appUser.setLastUpdatedBy(SecurityUtils.getCurrentUser());
-            appUser.setLastUpdatedDate(LocalDateTime.now());
-            userRepository.save(appUser);
-            return jwtTokenProvider.createToken(appUser.getUsername(), appUser.getAppUserRoles());
+    public UserResponse signup(User user) {
+        if (!userRepository.existsByUsername(user.getUsername())) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setCreatedBy(Strings.isNotEmpty(SecurityUtils.getCurrentUser()) ? "sys" : SecurityUtils.getCurrentUser());
+            user.setCreatedDate(LocalDateTime.now());
+            user.setLastUpdatedBy(Strings.isNotEmpty(SecurityUtils.getCurrentUser()) ? "sys" : SecurityUtils.getCurrentUser());
+            user.setLastUpdatedDate(LocalDateTime.now());
+            userRepository.save(user);
+//            return jwtTokenProvider.createToken(user.getUsername(), user.getUserRoles());
+            return modelMapper.map(user, UserResponse.class);
         } else {
             throw new ValidateException("Username is already in use");
         }
@@ -61,7 +63,7 @@ public class UserServiceImpl implements UserService {
 
     public UserResponse updateUser(Long userId, UserDataDTO appUser) {
 //        List<AppUser> listUser = userRepository.findByUsernameActive(appUser.getUsername(), Integer.parseInt(Constants.STATUS.ACTIVE));
-        AppUser user = userRepository.findById(userId).orElseThrow(() -> new ValidateException("User không tồn tại hoặc đã bị xóa"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new ValidateException("User không tồn tại hoặc đã bị xóa"));
 
         if (Constants.STATUS.ACTIVE.equals(user.getStatus())) {
             throw new ValidateException("User không tồn tại hoặc đã bị xóa");
@@ -81,26 +83,42 @@ public class UserServiceImpl implements UserService {
     }
 
     public UserResponse search(String username) {
-        AppUser appUser = userRepository.findByUsername(username);
-        if (appUser == null) {
+        //test thread
+//        for (int i = 0; i < 26; i++) {
+//            acoountAsync.processThread1(i);
+//        }
+//        ExecutorService executorService = Executors.newFixedThreadPool(5);
+//
+//        // Khai báo 10 Runnable, và "quăng" chúng vào Thread Pool vừa khai báo
+//        for (int i = 1; i <= 26; i++) {
+//            MyRunnable myRunnable = new MyRunnable("Runnable " + i);
+//            executorService.execute(myRunnable);
+////            executorService.execute(acoountAsync.processThread1(i));
+//        }
+
+        // Phương thức này sẽ được nói sau ở ExecutorService
+//        executorService.shutdown();
+
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
 //            throw new CustomException("The user doesn't exist", HttpStatus.NOT_FOUND);
             throw new ValidateException("User không tồn tại hoặc đã bị xóa");
         }
-        return modelMapper.map(appUser, UserResponse.class);
+        return modelMapper.map(user, UserResponse.class);
     }
 
-    public AppUser whoami(HttpServletRequest req) {
+    public User whoami(HttpServletRequest req) {
         return userRepository.findByUsername(jwtTokenProvider.getUsername(jwtTokenProvider.resolveToken(req)));
     }
 
     public String refresh(String username) {
-        return jwtTokenProvider.createToken(username, userRepository.findByUsername(username).getAppUserRoles());
+        return jwtTokenProvider.createToken(username, userRepository.findByUsername(username).getUserRoles());
     }
 
     @Override
     public UserResponse createUser(UserDataDTO appUser) {
         if (!userRepository.existsByUsername(appUser.getUsername())) {
-            AppUser au = modelMapper.map(appUser, AppUser.class);
+            User au = modelMapper.map(appUser, User.class);
             au.setPassword(passwordEncoder.encode(appUser.getPassword()));
             au.setStatus(Integer.valueOf(Constants.STATUS.ACTIVE));
             au.setCreatedBy(SecurityUtils.getCurrentUser());

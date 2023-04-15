@@ -1,7 +1,7 @@
 package com.service;
 
 import com.dto.UserDataDTO;
-import com.model.AppUser;
+import com.model.User;
 import com.model.response.UserResponse;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,7 +11,7 @@ public interface UserService {
 
     String signin(String username, String password);
 
-    String signup(AppUser appUser);
+    UserResponse signup(User user);
 
     UserResponse updateUser(Long userId, UserDataDTO appUser);
 
@@ -19,7 +19,7 @@ public interface UserService {
 
     UserResponse search(String username);
 
-    AppUser whoami(HttpServletRequest req);
+    User whoami(HttpServletRequest req);
 
     String refresh(String username);
 

@@ -19,7 +19,8 @@ spring:
         format_sql: true
         id:
           new_generator_mappings: false
-
+#  aop:
+#    auto: true
 server:
   port: 8080 # This is the default port anyway, but you can change it here
 
@@ -35,3 +36,6 @@ UserController:
   delete: Deletes specific user by username
   search: Returns specific user by username
   me: Returns current user's data
+
+thread:
+  thread-fixed: 5
